@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  margin-right: 0px;
+  overflow-y: scroll;
+}
+
+.active {
+  background-color: #1565c0;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.non-active {
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.active,
+.non-active {
+  transition: background-color 0.3s ease;
+}
