@@ -23,6 +23,9 @@ const PaginationControls = () => {
   const page = Number(searchParams.get('page')) || 1;
   const pageSize = Number(searchParams.get('pageSize')) || 10;
 
+  const totalUsers = users.length;
+  const totalPages = Math.ceil(totalUsers / pageSize);
+
   const goToPage = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       router.push(`?page=${newPage}&pageSize=${pageSize}`);
