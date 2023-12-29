@@ -6,11 +6,12 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import db from '../../../_data/db.json';
-import { addUser } from '@/app/actions';
+import { addUser, getRoles } from '@/app/actions';
 import CreateButton from './CreateButton';
 
-const CreateUser = () => {
+const CreateUser = async () => {
+  const roles = await getRoles();
+
   return (
     <Container
       style={{
@@ -74,7 +75,7 @@ const CreateUser = () => {
         <FormControl fullWidth margin='normal' required>
           <InputLabel id='roleNameLabel'>Role Name</InputLabel>
           <Select labelId='roleNameLabel' name='roleName' defaultValue={''}>
-            {db.roles.map((role) => (
+            {roles.map((role) => (
               <MenuItem key={role.id} value={role.roleName}>
                 {role.roleName}
               </MenuItem>

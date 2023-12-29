@@ -1,12 +1,12 @@
 import { Container } from '@mui/material';
-import db from '../../../_data/db.json';
-import { updateUser } from '@/app/actions';
 import UpdateUser from './UpdateUser';
+import { getUsers } from '@/app/actions';
 
 const page = async ({ params }) => {
   const userId = params.id;
 
-  const userToUpdate = db.users.find((user) => user.id === parseInt(userId));
+  const users = await getUsers();
+  const userToUpdate = users.find((user) => user.id === parseInt(userId));
 
   return (
     <Container
@@ -17,7 +17,7 @@ const page = async ({ params }) => {
         justifyContent: 'center',
       }}
     >
-      <UpdateUser userToUpdate={userToUpdate} userId={userId} db={db} />
+      <UpdateUser userToUpdate={userToUpdate} userId={userId} />
     </Container>
   );
 };

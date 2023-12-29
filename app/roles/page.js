@@ -11,9 +11,15 @@ import {
   Box,
 } from '@mui/material';
 import Link from 'next/link';
-import db from '../../_data/db.json';
+import { getRoles } from '../actions';
 
-const Roles = () => {
+const Roles = async () => {
+  const roles = await getRoles();
+
+  const sortedRoles = roles.sort((a, b) =>
+    a.roleName.localeCompare(b.roleName)
+  );
+
   return (
     <Container>
       <Box
@@ -50,7 +56,7 @@ const Roles = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {db.roles.map((role) => (
+              {sortedRoles.map((role) => (
                 <TableRow key={role.id}>
                   <TableCell>{role.roleName}</TableCell>
                   <TableCell>{role.shortDescription}</TableCell>

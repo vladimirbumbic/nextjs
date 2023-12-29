@@ -52,6 +52,11 @@ const UpdateRole = ({ roleToUpdate, roleId }) => {
           fullWidth
           margin='dense'
           required
+          inputProps={{
+            pattern: '^[a-zA-Z0-9_]{2,16}$',
+            title:
+              'required alphanumeric value that can contain underscore (_) with min length of 2, max length of 16 characters.',
+          }}
           defaultValue={
             optimisticRole[optimisticRole.length - 1]?.roleName || ''
           }
@@ -62,6 +67,10 @@ const UpdateRole = ({ roleToUpdate, roleId }) => {
           name='shortDescription'
           fullWidth
           margin='dense'
+          inputProps={{
+            pattern: '^[a-zA-Z]{2,50}$',
+            title: 'string, min length of 2, max length of 50 characters.',
+          }}
           defaultValue={
             optimisticRole[optimisticRole.length - 1]?.shortDescription || ''
           }

@@ -7,15 +7,26 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { startTransition, useOptimistic, useState } from 'react';
+import { startTransition, useEffect, useOptimistic, useState } from 'react';
 import UpdateButton from './UpdateButton';
-import { updateUser } from '@/app/actions';
+import { getRoles, updateUser } from '@/app/actions';
 
-const UserPage = ({ userId, userToUpdate, db }) => {
+const UserPage = ({ userId, userToUpdate }) => {
+  const [roles, setRoles] = useState([]);
+
   const [optimisticUser, setOptimisticUser] = useOptimistic(
     [userToUpdate],
     (state, newUser) => [...state, newUser]
   );
+
+  useEffect(() => {
+    const fetchRoles = async () => {
+      const fetchedRoles = await getRoles();
+      setRoles(fetchedRoles);
+    };
+
+    fetchRoles();
+  }, []);
 
   const handleFieldChange = (fieldName, value) => {
     startTransition(() => {
@@ -25,6 +36,7 @@ const UserPage = ({ userId, userToUpdate, db }) => {
       });
     });
   };
+
   const [roleName, setRoleName] = useState(
     optimisticUser[optimisticUser.length - 1]?.roleName || ''
   );
@@ -34,6 +46,7 @@ const UserPage = ({ userId, userToUpdate, db }) => {
     setRoleName(selectedRoleName);
     handleFieldChange('roleName', selectedRoleName);
   };
+
   return (
     <Container
       style={{
@@ -116,7 +129,7 @@ const UserPage = ({ userId, userToUpdate, db }) => {
             value={roleName}
             onChange={handleRoleNameChange}
           >
-            {db.roles.map((role) => (
+            {roles.map((role) => (
               <MenuItem key={role.id} value={role.roleName}>
                 {role.roleName}
               </MenuItem>

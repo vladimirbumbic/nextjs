@@ -1,12 +1,12 @@
 import { Container } from '@mui/material';
-import { editRole } from '@/app/actions';
-import db from '../../../_data/db.json';
+import { getRoles } from '@/app/actions';
 import UpdateRole from './UpdateRole';
 
-const page = ({ params }) => {
+const page = async ({ params }) => {
   const roleId = params.id;
 
-  const roleToUpdate = db.roles.find((r) => r.id.toString() === roleId);
+  const roles = await getRoles();
+  const roleToUpdate = roles.find((r) => r.id.toString() === roleId);
 
   return (
     <Container

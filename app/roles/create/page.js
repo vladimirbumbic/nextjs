@@ -45,7 +45,7 @@ const CreateRole = () => {
           fullWidth
           margin='dense'
           inputProps={{
-            pattern: '^.{2,50}$',
+            pattern: '^[a-zA-Z]{2,50}$',
             title: 'string, min length of 2, max length of 50 characters.',
           }}
         />

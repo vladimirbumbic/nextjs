@@ -1,15 +1,33 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import db from '../../_data/db.json';
 import { Button } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { getUsers } from '../actions';
 
 const PaginationControls = () => {
+  const [users, setUsers] = useState([]);
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const page = searchParams.get('page') || 1;
-  const pageSize = searchParams.get('pageSize') || 10;
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const fetchedUsers = await getUsers();
+      setUsers(fetchedUsers);
+    };
+
+    fetchUsers();
+  }, []);
+
+  const page = Number(searchParams.get('page')) || 1;
+  const pageSize = Number(searchParams.get('pageSize')) || 10;
+
+  const goToPage = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      router.push(`?page=${newPage}&pageSize=${pageSize}`);
+    }
+  };
 
   return (
     <div
@@ -20,9 +38,7 @@ const PaginationControls = () => {
       }}
     >
       <Button
-        onClick={() =>
-          router.push(`?page=${Number(page) - 1}&pageSize=${pageSize}`)
-        }
+        onClick={() => goToPage(page - 1)}
         disabled={page === 1}
         style={{ marginRight: '10px' }}
       >
@@ -30,12 +46,11 @@ const PaginationControls = () => {
       </Button>
 
       <div>
-        {page}/ {Math.ceil(db.users.length / Number(pageSize))}
+        {page}/ {totalPages}
       </div>
       <Button
-        onClick={() =>
-          router.push(`?page=${Number(page) + 1}&pageSize=${pageSize}`)
-        }
+        onClick={() => goToPage(page + 1)}
+        disabled={page === totalPages}
         style={{ marginLeft: '10px' }}
       >
         Next
